@@ -1,18 +1,14 @@
+FROM ubuntu
 
-# Use an official Python runtime as a parent image
-FROM python:3.11
+RUN apt update -y
+RUN apt install python3 python3-pip pipenv -y
 
-# Set the working directory inside the container
 WORKDIR /app
+COPY . /app/
+RUN pipenv install -r requirements.txt
 
-# Copy the application code into the container
-COPY . /app
-
-# Install dependencies using pip instead of pipenv
-RUN pip install --no-cache-dir -r requirement.txt
-
-# Expose the port FastAPI runs on
 EXPOSE 80
 
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+
+# CMD pipenv run uvicorn main:app --host 0.0.0.0 --port 80
+CMD pipenv run python3 ./main.py
