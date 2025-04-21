@@ -1,34 +1,23 @@
 name: Docker image build
 
-on: push
+on:
+  push:
 
 jobs:
-  
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    steps: 
+      - uses: actions/checkout@v3
 
-      - name: Show directory contents (for debugging)
-        run: |
-          ls
-          pwd
-          cat main.py
-          cat Dockerfile
-          cat requirements.txt
+      - name: Check if secret is present
+        run: echo "${{ secrets.DOCKERTOKEN }}" | wc -c
+      
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERTOKEN }}" | docker login -u "abhishek71r" --password-stdin
 
-      - name: Build Docker Image
-        run: |
-          docker build -t imagename:v1 .
+      - name: Build Docker image
+        run: docker build -t abhishek71r/fast_api_dockerize . 
 
-      # Optional: Push to Docker Hub
-      # Uncomment the below lines after setting your Docker Hub token as a secret named DOCKERTOKEN
-      # - name: Log in to Docker Hub
-      #   run: echo "${{ secrets.DOCKERTOKEN }}" | docker login -u "abhishek71r" --password-stdin
-
-      # - name: Push Docker Image
-      #   run: |
-      #     docker tag imagename:v1 abhishek71r/imagename:v1
-      #     docker push abhishek71r/imagename:v1
+      - name: Push Docker image
+        run: docker push abhishek71r/fast_api_dockerize 
