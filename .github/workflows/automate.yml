@@ -17,7 +17,7 @@ jobs:
         run: echo "${{ secrets.DOCKERTOKEN }}" | docker login -u "abhishek71r" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t abhishek71r/fast_api_dockerize . 
+        run: docker build -t abhishek71r/imagename . 
 
       - name: Push Docker image
-        run: docker push abhishek71r/fast_api_dockerize 
+        run: docker push abhishek71r/imagename
