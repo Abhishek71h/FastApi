@@ -1,14 +1,20 @@
-FROM ubuntu
+FROM ubuntu:latest
 
+# Install dependencies
 RUN apt update -y
 RUN apt install python3 python3-pip pipenv -y
 
+# Set the working directory
 WORKDIR /app
-COPY . /app/
-RUN pipenv install -r requirements.txt
 
+# Copy the project files
+COPY . /app/
+
+# Install dependencies
+RUN pipenv install --dev
+
+# Expose port 80
 EXPOSE 80
 
-
-# CMD pipenv run uvicorn main:app --host 0.0.0.0 --port 80
-CMD pipenv run python3 ./main.py
+# Run the app
+CMD pipenv run uvicorn main:app --host 0.0.0.0 --port 80
